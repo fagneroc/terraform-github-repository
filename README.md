@@ -33,6 +33,7 @@ The automation is triggered through GitHub Actions workflows.
     Go to your GitHub repository settings and add the following secrets:
     - `AWS_ACCESS_KEY_ID`
     - `AWS_SECRET_ACCESS_KEY`
+    - `AWS_REGION`
     - `TOKEN_GITHUB`
 
 ### GitHub Actions Workflow
