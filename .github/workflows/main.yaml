@@ -12,6 +12,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
@@ -28,12 +30,16 @@ jobs:
       - name: List modified directories in Production
         id: list_modified_dirs
         run: |
-          modified_dirs=$(git diff --name-only HEAD~1 HEAD Production | awk -F'/' '{print $2}' | sort -u)
-          echo "::set-output name=directories::$modified_dirs"
+          if [ $(git rev-list --count HEAD) -eq 1 ]; then
+            modified_dirs=$(git diff --name-only HEAD Production | awk -F'/' '{print $2}' | sort -u)
+          else
+            modified_dirs=$(git diff --name-only HEAD~1 HEAD Production | awk -F'/' '{print $2}' | sort -u)
+          fi
+          echo "directories=$modified_dirs" >> $GITHUB_ENV
 
       - name: Terraform Apply
         run: |
-          IFS=' ' read -r -a directories <<< "${{ steps.list_modified_dirs.outputs.directories }}"
+          IFS=' ' read -r -a directories <<< "${{ env.directories }}"
           for directory in "${directories[@]}"; do
             echo "Applying Terraform in $directory"
             cd "Production/$directory"
