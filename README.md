@@ -1,7 +1,7 @@
-# GitHub Terraform Automation
+# GitHub Repository Automation with Terraform 
 
-This repository automates the creation and management of repositories on GitHub, including necessary files, permissions and webhooks using Terraform.
-The automation is triggered through GitHub Actions workflows.
+This project automates the creation and management of repositories on GitHub, including necessary files, permissions and webhooks using Terraform.
+The automation is triggered through GitHub Actions workflows that identify pushes to the main branch.
 
 ## Features
 
@@ -43,7 +43,11 @@ The workflow file is located at `.github/workflows/main.yml` and includes steps 
 - Checking out the repository.
 - Configuring AWS credentials.
 - Setting up Terraform.
-- Listing modified directories and applying Terraform configurations to those directories.
+- Listing modified directories in the last commit and applying Terraform configurations to those directories.
+
+### Future releases
+
+- List the directories removed in the last commit and application Terraform destroy.
 
 ### License
 
